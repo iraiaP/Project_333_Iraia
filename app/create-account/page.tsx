@@ -14,15 +14,30 @@ export default function CreateAccountPage() {
   const [password, setPassword] = useState("");
   const [accountType, setAccountType] = useState("client"); // Default to "client"
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    console.log("Name:", name);
-    console.log("Email:", email);
-    console.log("Password:", password);
-    console.log("Account Type:", accountType);
+  try {
+    const response = await fetch("/api/create-account", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+        accountType,
+      }),
+    });
 
-    // later: send to database/API
+    const data = await response.json();
+
+    console.log(data.message);
+  } catch (error) {
+    console.error("Failed to create account:", error);
+  }
+  
   };
 
   return (
@@ -84,3 +99,43 @@ export default function CreateAccountPage() {
     </form>
   );
 }
+
+/* 
+
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  try {
+    const response = await fetch("/api/create-account", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+        accountType,
+      }),
+    });
+
+    const data = await response.json();
+
+    console.log(data.message);
+  } catch (error) {
+    console.error("Failed to create account:", error);
+  }
+};
+
+
+
+const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    console.log("Name:", name);
+    console.log("Email:", email);
+    console.log("Password:", password);
+    console.log("Account Type:", accountType);
+
+    // later: send to database/API
+*/
