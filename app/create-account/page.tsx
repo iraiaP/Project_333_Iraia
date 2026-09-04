@@ -17,6 +17,7 @@ export default function CreateAccountPage() {
   const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
 
+  console.log("Button clicked");
   try {
     const response = await fetch("/api/create-account", {
       method: "POST",
@@ -34,6 +35,7 @@ export default function CreateAccountPage() {
     const data = await response.json();
 
     console.log(data.message);
+  
   } catch (error) {
     console.error("Failed to create account:", error);
   }
@@ -92,6 +94,7 @@ export default function CreateAccountPage() {
 
       <button
         type="submit"
+        onClick={() => alert("Button works")}
         className="rounded bg-blue-500 px-4 py-2 text-white"
       >
         Create Account
