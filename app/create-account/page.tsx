@@ -3,8 +3,6 @@
 import { useState } from "react";
 import React from "react";
 
-//TO DO:Link button to send data to database and create account.
-//Verify account is created and in database
 //TO DO: Add validation for email and password fields.
 //TO DO: Add error handling for failed account creation.
 //TO DO: Add success message for successful account creation.
@@ -16,6 +14,11 @@ export default function CreateAccountPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
+
+  if (!name || !email || !password) {
+    alert("Please fill in all fields.");
+    return;
+  }
 
   console.log("Button clicked");
   try {
@@ -37,6 +40,7 @@ export default function CreateAccountPage() {
     console.log(data.message);
   
   } catch (error) {
+    alert("Failed to create account. Please try again.");
     console.error("Failed to create account:", error);
   }
   
@@ -91,54 +95,15 @@ export default function CreateAccountPage() {
           onChange={(e) => setPassword(e.target.value)}
           className="border p-2"
         />
-
-      <button
-        type="submit"
-        onClick={() => alert("Button works")}
-        className="rounded bg-blue-500 px-4 py-2 text-white"
-      >
-        Create Account
-      </button>
+      <div className="flex justify-center">
+        <button
+          type="submit"
+          className="rounded bg-blue-500 px-4 py-2 text-white"
+        >
+          Create Account
+        </button>
+      </div>
     </form>
   );
 }
 
-/* 
-
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-
-  try {
-    const response = await fetch("/api/create-account", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        email,
-        password,
-        accountType,
-      }),
-    });
-
-    const data = await response.json();
-
-    console.log(data.message);
-  } catch (error) {
-    console.error("Failed to create account:", error);
-  }
-};
-
-
-
-const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    console.log("Name:", name);
-    console.log("Email:", email);
-    console.log("Password:", password);
-    console.log("Account Type:", accountType);
-
-    // later: send to database/API
-*/
