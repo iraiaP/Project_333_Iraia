@@ -2,15 +2,18 @@
 
 import { useState } from "react";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 //TO DO: Add validation for email and password fields.
 //TO DO: Add error handling for failed account creation.
 //TO DO: Add success message for successful account creation.
+//To Do: Add redirect to login page after successful account creation.
 export default function CreateAccountPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [accountType, setAccountType] = useState("client"); // Default to "client"
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
@@ -38,6 +41,7 @@ export default function CreateAccountPage() {
     const data = await response.json();
 
     console.log(data.message);
+    router.push("/login"); // Redirect to login page after successful account creation
   
   } catch (error) {
     alert("Failed to create account. Please try again.");
@@ -47,6 +51,7 @@ export default function CreateAccountPage() {
   };
 
   return (
+
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4">
       
     <div className="flex gap-6">
