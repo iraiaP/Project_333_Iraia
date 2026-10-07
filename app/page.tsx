@@ -27,9 +27,13 @@ export default function Home() {
             THis will eventually become our Title page that connects to the rest of the app. 
             <p>   Leave for now </p>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-             Find a Trainer
-          </p>
+          <div className="flex flex-col gap-4 sm:flex-row">
+          <Link href="/book-trainer">
+            <button className="rounded bg-blue-500 px-4 py-2 text-white">
+              Find a Trainer
+            </button>
+          </Link>
+          </div>
         </div>
         <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
           
