@@ -170,6 +170,9 @@ export default function BookingCalendar() {
 
           <button
             onClick={async () => {
+
+              const currentClientId = "client123"; // Replace with actual client ID from your authentication system
+              
               await fetch("/api/availability", {
                 method: "PUT",
                 headers: {
@@ -177,9 +180,23 @@ export default function BookingCalendar() {
                 },
                 body: JSON.stringify({
                   id: selectedEvent.id,
-                  clientId: "client123",
+                  clientId: currentClientId, // Assign the current client ID to the selected event
                 }),
               });
+              const response = await fetch("/api/availability", {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  id: selectedEvent.id,
+                  clientId: currentClientId,
+                }),
+              });
+              if (!response.ok) {
+                alert("This slot has already been booked.");
+                return;
+              }
 
               setSelectedEvent(null);
               loadAvailability();
@@ -187,8 +204,7 @@ export default function BookingCalendar() {
           >
             Book
           </button>
-
-
+            
           <button
             onClick={async () => {
               await fetch("/api/availability", {

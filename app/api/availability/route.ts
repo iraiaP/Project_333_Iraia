@@ -6,8 +6,27 @@ import { ObjectId } from "mongodb";
 
  const uri = process.env.MONGODB_URI!;
 
+export async function GET() {
+  try {
+    const client = await MongoClient.connect(uri, {});
 
- export async function GET() {
+    return NextResponse.json({
+      connected: true,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return NextResponse.json(
+      {
+        connected: false,
+        error: String(error),
+      },
+      { status: 500 }
+    );
+  }
+}
+
+/* export async function GET() {
   const client = await MongoClient.connect(uri, {});
   const db = client.db("Db_333");
  
@@ -17,7 +36,7 @@ import { ObjectId } from "mongodb";
     .toArray();
 
   return NextResponse.json(availability);
-}
+} */
  
 export async function POST(request: Request) {
   const client = await MongoClient.connect(uri, {});
@@ -58,6 +77,20 @@ export async function PUT(request: Request) {
   clientId,
 } = await request.json();
 
+  if (clientId) { //checks if the slot is already booked, if it is then it returns an error message
+    const existing = await db.collection("availability").findOne({
+      _id: new ObjectId(id),
+    });
+
+    if (existing?.clientId) {
+      return NextResponse.json(
+        { error: "Slot already booked" },
+        { status: 400 }
+      );
+    }
+  }
+
+
   const result = await db.collection("availability").updateOne(
     { _id: new ObjectId(id) },
     { $set: {
@@ -67,6 +100,8 @@ export async function PUT(request: Request) {
         ...(clientId !== undefined && { clientId }),
       }}
   );
+
+
 
   return NextResponse.json(result);
 }
