@@ -33,6 +33,7 @@ export default function BookingCalendar() {
   const loadAvailability = async () => {
     const response = await fetch("/api/availability");
     const data = await response.json();
+    console.log("Availability data:", data); // Log the fetched data for debugging
 
     const calendarEvents = data.map((slot: any) => ({
       id: slot._id,

@@ -6,27 +6,8 @@ import { ObjectId } from "mongodb";
 
  const uri = process.env.MONGODB_URI!;
 
-export async function GET() {
-  try {
-    const client = await MongoClient.connect(uri, {});
 
-    return NextResponse.json({
-      connected: true,
-    });
-  } catch (error) {
-    console.error(error);
-
-    return NextResponse.json(
-      {
-        connected: false,
-        error: String(error),
-      },
-      { status: 500 }
-    );
-  }
-}
-
-/* export async function GET() {
+ export async function GET() {
   const client = await MongoClient.connect(uri, {});
   const db = client.db("Db_333");
  
@@ -36,7 +17,7 @@ export async function GET() {
     .toArray();
 
   return NextResponse.json(availability);
-} */
+}
  
 export async function POST(request: Request) {
   const client = await MongoClient.connect(uri, {});
