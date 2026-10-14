@@ -26,7 +26,7 @@ export async function POST(request: Request) {
 
     // Check if the account type is valid
     if(body.accountType === "client") {
-      user = new Client(body.name, body.email, body.password);
+      
 
       await db.collection("Clients").insertOne({
       name: body.name,
@@ -36,12 +36,15 @@ export async function POST(request: Request) {
       });
 
     } else if(body.accountType === "trainer") {
-      user = new Trainer(body.name, body.email, body.password);
+       
       await db.collection("trainer_acc").insertOne({
         name: body.name,
+        suburb: body.suburb,
+        city: body.city,
         email: body.email,
         password: body.password,
         createdAt: new Date(),
+       
       });
     }
 
@@ -54,6 +57,6 @@ export async function POST(request: Request) {
     { message: "Error creating account" },
     { status: 500 }
     );
-  } 
+  }  
 }
 

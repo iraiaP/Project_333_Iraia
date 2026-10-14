@@ -56,7 +56,11 @@ export default function FindTrainerPage() {
               borderRadius: "8px",
             }}
           >
-            <h3>{trainer.name}</h3>
+            <h3>
+              <Link href={`/trainers/${trainer._id}`}>
+                {trainer.name}
+              </Link>
+            </h3>
 
             <p>{trainer.suburb}</p>
 
@@ -67,91 +71,3 @@ export default function FindTrainerPage() {
   </div>
 );
 }
-
-/*
-
-
-
-     {Object.entries(trainersByCity).map(
-        ([city, cityTrainers]: any) => (
-          <div key={city} style={{ marginBottom: "30px" }}>
-            <h2>{city}</h2>
-
-            {cityTrainers.map((trainer: any) => (
-              <div
-                key={trainer._id}
-                style={{
-                  border: "1px solid #ccc",
-                  padding: "15px",
-                  marginBottom: "10px",
-                  borderRadius: "8px",
-                }}
-              >
-                <h3>{trainer.name}</h3>
-
-                <p>{trainer.suburb}</p>
-
-                <Link href={`/trainers/${trainer._id}`}>
-                  View Profile
-                </Link>
-              </div>
-            ))}
-          </div>
-        )
-      )}
-
-*/
-
-
-/*  
-"use client";
-
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import Link from "next/link";
-
-export default function TrainerProfilePage() {
-  const { id } = useParams();
-
-  const [trainer, setTrainer] = useState<any>(null);
-
-  useEffect(() => {
-    loadTrainer();
-  }, []);
-
-  const loadTrainer = async () => {
-    const response = await fetch(`/api/trainers/${id}`);
-    const data = await response.json();
-
-    setTrainer(data);
-  };
-
-  if (!trainer) {
-    return <p>Loading...</p>;
-  }
-
-  return (
-    <div style={{ padding: "20px" }}>
-      <h1>{trainer.name}</h1>
-
-      <p>
-        <strong>City:</strong> {trainer.city}
-      </p>
-
-      <p>
-        <strong>Suburb:</strong> {trainer.suburb}
-      </p>
-
-      <p>
-        <strong>Email:</strong> {trainer.email}
-      </p>
-
-      <br />
-
-      <Link href={`/trainers/${trainer._id}/       <button>Book Session</button>
-      </Link>
-    </div>
-  );
-}
-
-*/

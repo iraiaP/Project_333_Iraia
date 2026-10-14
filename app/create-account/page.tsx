@@ -3,6 +3,7 @@
 import { useState } from "react";
 import React from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function CreateAccountPage() {
   const [name, setName] = useState("");
@@ -130,12 +131,14 @@ export default function CreateAccountPage() {
       )}
 
       <div className="flex justify-center">
-        <button
-          type="submit"
-          className="rounded bg-blue-500 px-4 py-2 text-white"
-        >
-          Create Account
-        </button>
+        <Link href="/login">
+          <button
+            type="submit"
+            className="rounded bg-blue-500 px-4 py-2 text-white"
+          >
+            Create Account
+          </button>
+        </Link>
       </div>
     </form>
   );
