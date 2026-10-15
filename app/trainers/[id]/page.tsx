@@ -40,14 +40,19 @@ export default function TrainerProfilePage() {
       <p>
         <strong>Email:</strong> {trainer.email}
       </p>
-
+      <br />
       <div> 
-        <h2> Bio</h2>
+        <h2> 
+          <strong>Bio </strong>
+        </h2>
         <p>{trainer.bio}</p>
-      </div>
-
-    <Link href={'/book-trainer'}>
-            <button>Book Session</button>
+      <br/>
+      </div >
+        // Add a button to book a session with the trainer
+        <Link href={'/book-trainer'}> 
+            <button
+                className="rounded bg-blue-500 px-4 py-2 text-white"
+            >Book Session</button>
         </Link>
     </div>
   );

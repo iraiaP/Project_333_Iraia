@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function FindTrainerPage() {
   const [trainers, setTrainers] = useState<any[]>([]);
 
-  const trainersByCity = trainers.reduce((groups: any, trainer: any) => {
+/*  const trainersByCity = trainers.reduce((groups: any, trainer: any) => {
     if (!groups[trainer.city]) {
       groups[trainer.city] = [];
     }
@@ -14,7 +14,7 @@ export default function FindTrainerPage() {
     groups[trainer.city].push(trainer);
 
     return groups;
-  }, {}); 
+  }, {}); */
 
   useEffect(() => {
     loadTrainers();
@@ -36,7 +36,7 @@ export default function FindTrainerPage() {
     {trainers.map((trainer: any) => {
       const showCityHeading = trainer.city !== currentCity;
 
-      if (showCityHeading) {
+      if (showCityHeading) { // Update the current city to the trainer's city
         currentCity = trainer.city;
       }
 
@@ -56,9 +56,10 @@ export default function FindTrainerPage() {
               borderRadius: "8px",
             }}
           >
-            <h3>
+            <h3 >
+              
               <Link href={`/trainers/${trainer._id}`}>
-                {trainer.name}
+                <strong>{trainer.name} </strong>
               </Link>
             </h3>
 
