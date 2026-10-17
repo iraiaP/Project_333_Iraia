@@ -5,10 +5,16 @@ export default function Home() {
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
 
-      <div className="fixed top-0 left-0 flex h-16 w-full items-center justify-start px-4">
+       <div className="fixed top-0 left-0 flex h-14 w-full items-center justify-start gap-4 px-4">
         <Link href="/create-account" className="rounded bg-blue-500 px-4 py-2 text-white">
-          <button className="rounded bg-blue-500 px-4 py-2 text-white">  
+          <button className="rounded bg-blue-500 px-4 py-2 text-white"> 
             Create account  
+          </button>
+        </Link>
+
+         <Link href="/login" className="rounded bg-blue-500 px-4 py-2 text-white">
+          <button className="rounded bg-blue-500 px-4 py-2 text-white">  
+            Login  
           </button>
         </Link>
       </div>
@@ -26,11 +32,11 @@ export default function Home() {
           <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
             Frickin Workkkk
             <p>   To Do:</p>
-            <p>   - do route.ts for booking session/  
+            <p> 
              do login and book session as client/  
               do login as trainer and see booked sessions/  
               , display booked sessions on trainerand client page/  
-              add better functionality to the calendar for availability/   
+              add better functionality to trainer ar for availability/   
               make /[id]/book page look better 
             
             </p>

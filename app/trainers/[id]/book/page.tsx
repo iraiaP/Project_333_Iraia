@@ -66,7 +66,7 @@ export default function BookSessionPage() {
       body: JSON.stringify({
         trainerId: id,
         availabilityId: sessionId,
-        clientId: "testClient",
+        clientId: localStorage.getItem("clientId"),
       }),
     });
 
