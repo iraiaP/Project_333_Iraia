@@ -33,8 +33,7 @@ export default function Home() {
             Frickin Workkkk
             <p>   To Do:</p>
             <p> 
-             do login and book session as client/  
-              do login as trainer and see booked sessions/  
+          
               , display booked sessions on trainerand client page/  
               add better functionality to trainer ar for availability/   
               make /[id]/book page look better 

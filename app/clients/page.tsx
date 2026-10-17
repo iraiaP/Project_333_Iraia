@@ -22,7 +22,7 @@ export default function ClientDashboard() {
 
   }, []);
   const loadBookings = async () => {
-    const clientId = localStorage.getItem("clientId");
+    const clientId = localStorage.getItem("userId");
     // Implement booking loading logic here
     const response = await fetch(`/api/bookings/${clientId}`);
     const data = await response.json();
