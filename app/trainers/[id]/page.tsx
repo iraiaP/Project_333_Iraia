@@ -15,10 +15,13 @@ export default function TrainerProfilePage() {
   }, []);
 
   const loadTrainer = async () => {
+  
+
     const response = await fetch(`/api/trainers/${id}`);
+    
     const data = await response.json();
 
-    setTrainer(data);
+  setTrainer(data);
   };
 
   if (!trainer) {
@@ -48,8 +51,7 @@ export default function TrainerProfilePage() {
         <p>{trainer.bio}</p>
       <br/>
       </div >
-        // Add a button to book a session with the trainer
-        <Link href={'/book-trainer'}> 
+        <Link href={'/trainers/' + id + '/book'}> 
             <button
                 className="rounded bg-blue-500 px-4 py-2 text-white"
             >Book Session</button>

@@ -6,15 +6,7 @@ import Link from "next/link";
 export default function FindTrainerPage() {
   const [trainers, setTrainers] = useState<any[]>([]);
 
-/*  const trainersByCity = trainers.reduce((groups: any, trainer: any) => {
-    if (!groups[trainer.city]) {
-      groups[trainer.city] = [];
-    }
-
-    groups[trainer.city].push(trainer);
-
-    return groups;
-  }, {}); */
+ 
 
   useEffect(() => {
     loadTrainers();
@@ -31,7 +23,11 @@ export default function FindTrainerPage() {
 
  return (
   <div style={{ padding: "20px" }}>
-    <h1>Find a Trainer</h1>
+    <h1>
+      <strong>
+        Find a Trainer
+      </strong>
+    </h1>
 
     {trainers.map((trainer: any) => {
       const showCityHeading = trainer.city !== currentCity;

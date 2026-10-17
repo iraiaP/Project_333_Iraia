@@ -25,7 +25,15 @@ export default function Home() {
         <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
           <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
             Frickin Workkkk
-            <p>   Leave for now </p>
+            <p>   To Do:</p>
+            <p>   - do route.ts for booking session/  
+             do login and book session as client/  
+              do login as trainer and see booked sessions/  
+              , display booked sessions on trainerand client page/  
+              add better functionality to the calendar for availability/   
+              make /[id]/book page look better 
+            
+            </p>
           </h1>
           <div className="flex flex-col gap-4 sm:flex-row">
           <Link href="/trainers" className="rounded bg-blue-500 px-4 py-2 text-white">
