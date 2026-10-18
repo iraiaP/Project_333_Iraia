@@ -94,10 +94,10 @@ export default function LoginPage() {
         </button>
 
         <div>
-          <link href="/page.tsx"
+          <Link href="/"
           className = "border border-gray 300 rounded px-2">
           Go back
-          </link>
+          </Link>
         </div>
       </form>
 

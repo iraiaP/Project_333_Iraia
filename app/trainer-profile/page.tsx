@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 
 export default function TrainerProfile() {
     const [trainer, setTrainer] = useState<any>(null);
+    const [bookings, setBookings] = useState<any[]>([]);
     const [name, setName] = useState("");
     const [showProfileModal, setShowProfileModal] = useState(false); //used to show/hide the profile modal
     const [profile, setProfile] = useState({
@@ -16,6 +17,7 @@ export default function TrainerProfile() {
         suburb: "",
         password: "",
     });
+    const trainerId = localStorage.getItem("userId");
 
 
   const router = useRouter();
@@ -33,11 +35,21 @@ export default function TrainerProfile() {
     }
 
     loadProfile() 
+    loadBookings()
 
   }, []);
- 
+  
+  const loadBookings = async () => {
+
+    const response = await fetch(
+      `/api/bookings/trainer/${trainerId}`
+    );
+
+    const data = await response.json();
+
+    setBookings(data);
+  };
   const loadProfile = async () =>{
-    const trainerId = localStorage.getItem("userId");
     const response = await fetch(`/api/trainer/${trainerId}`);
     const data = await response.json();
     setTrainer(data)
@@ -51,27 +63,27 @@ export default function TrainerProfile() {
   };
   
  const handleProfileUpdate = async () => {
-  const trainerId = localStorage.getItem("userId");
+    const trainerId = localStorage.getItem("userId");
 
-  const response = await fetch(
-    `/api/trainer/${trainerId}`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(profile),
+    const response = await fetch(
+      `/api/trainer/${trainerId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(profile),
+      }
+    );
+
+    if (response.ok) {
+      alert("Profile updated");
+
+      await loadProfile();
+
+      setShowProfileModal(false);
     }
-  );
-
-  if (response.ok) {
-    alert("Profile updated");
-
-    await loadProfile();
-
-    setShowProfileModal(false);
-  }
-};
+  };
 
 
   return (
@@ -80,11 +92,44 @@ export default function TrainerProfile() {
         <h1 className="text-3xl font-bold">
           Welcome, {name}
         </h1>
-
-        
       </div>
 
-         <div className="flex gap-4">
+      <h2 className="mt-8 mb-4 text-2xl font-bold">
+        Upcoming Bookings
+      </h2>
+
+      <div className="h-70 overflow-y-auto rounded border p-4">
+        {bookings.length === 0 ? (
+          <p>No bookings found.</p>
+        ) : (
+          bookings.map((booking: any) => (
+            <div
+              key={booking._id}
+              className="mb-3 rounded border p-3"
+            >
+              <p>
+                <strong>Date:</strong>{" "}
+                {new Date(booking.startTime).toLocaleDateString()}
+              </p>
+
+              <p>
+                  <strong>Time:</strong>{" "}
+                  {new Date(booking.startTime).toLocaleTimeString([], {
+                    hour: "numeric",
+                    minute: "2-digit",
+                  })}
+                  {" - "}
+                {new Date(booking.endTime).toLocaleTimeString([], {
+                  hour: "numeric",
+                  minute: "2-digit",
+                })}
+              </p>
+            </div>
+          ))
+        )}
+      </div>
+
+      <div className="flex gap-4">
          <Link
              href="/create-session"
              className="rounded bg-blue-500 px-4 py-2 text-white"
@@ -92,14 +137,14 @@ export default function TrainerProfile() {
           Add / Edit Availability
          </Link>
         
-          <div> 
-            <button  onClick={() => setShowProfileModal(true)}
-                    className="rounded bg-blue-500 px-4 py-2 text-white"
-            >
-             Update Profile   
-            </button>
-            
-          </div>
+        <div > 
+          <button  onClick={() => setShowProfileModal(true)}
+                  className="rounded bg-blue-500 px-4 py-2 text-white"
+          >
+            Update Profile   
+          </button>
+          
+        </div>
 
         <button
           onClick={handleLogout}
@@ -107,7 +152,7 @@ export default function TrainerProfile() {
         >
           Logout
         </button>
-        </div>
+      </div>
         
         {showProfileModal && (
             <div className="fixed inset-0 flex items-center justify-center bg-black/50">
@@ -208,12 +253,44 @@ export default function TrainerProfile() {
                 >
                     Cancel
                 </button>
-                </div>               </div>
-                                </div>
+                </div>   
+            </div>
+          </div>
 
         )}
                         
-      </div>
+    </div>
 
   );
 }
+
+/*
+<h2 className="mt-8 mb-4 text-2xl font-bold">
+  Upcoming Bookings
+</h2>
+
+<div className="h-80 overflow-y-auto rounded border p-4">
+  {bookings.length === 0 ? (
+    <p>No bookings found.</p>
+  ) : (
+    bookings.map((booking: any) => (
+      <div
+        key={booking._id}
+        className="mb-3 rounded border p-3"
+      >
+        <p>
+          <strong>Date:</strong>{" "}
+          {new Date(
+            booking.startTime
+          ).toLocaleDateString()}
+        </p>
+
+        <p>
+          <strong>Time:</strong>{" "}
+          {new Date(
+            booking.startTime
+          ).toLocaleTimeString([], {
+            hour: "numeric",
+       </p>
+  </div>
+*/
