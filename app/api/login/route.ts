@@ -1,4 +1,6 @@
+
 import { MongoClient } from "mongodb";
+import bcrypt from "bcryptjs";
 
 const uri = process.env.MONGODB_URI!;
 
@@ -7,27 +9,80 @@ export async function POST(request: Request) {
 
   const client = new MongoClient(uri);
 
-  await client.connect();
-  console.log("Connected to MongoDB");
-  const db = client.db("Db_333");
+  try {
+    await client.connect();
+    console.log("Connected to MongoDB");
 
- const user = await db
-  .collection(
-    accountType === "trainer" //if accountType is "trainer", use the "trainer_acc" collection, otherwise use the "Clients" collection
-    ? "trainer_acc" : 
-    "Clients")
-    .findOne({email: email, password: password});
-  
-    console.log("user Found:");
+    const db = client.db("Db_333");
 
-  if (!user) {
-    return Response.json(
-      { error: "Invalid login" },
-      { status: 401 }
+    // Select collection based on account type
+    if (accountType !== "client" && accountType !== "trainer") {
+      return Response.json(
+        { error: "Invalid account type" },
+        { status: 400 }
+      );
+    }
+
+    if (typeof email !== "string" ||
+        typeof password !== "string") {
+      return Response.json(
+        { error: "Invalid login details" },
+        { status: 400 }
+      );
+    }
+
+    const collectionName =
+      accountType === "trainer" ? "trainer_acc" : "Clients";
+
+    // Find user by email
+    const user = await db
+      .collection(collectionName)
+      .findOne({ email: email.trim().toLowerCase() });
+
+    // Check if user exists
+    if (!user) {
+      return Response.json(
+        { error: "Invalid email or password" },
+        { status: 401 }
+      );
+    }
+
+    // Compare entered password with hashed password
+    const passwordMatches = await bcrypt.compare(
+      password,
+      user.password
     );
-  }
 
-  return Response.json({
-    user,
-  });
+    if (!passwordMatches) {
+      return Response.json(
+        { error: "Invalid email or password" },
+        { status: 401 }
+      );
+    }
+
+    console.log("User logged in successfully");
+
+    // Return user details without password
+    return Response.json({
+      user: {
+        _id: user._id.toString(),
+        firstName: user.firstName,
+        lastName: user.lastName,
+        name: user.name,
+        email: user.email,
+        accountType,
+      },
+    });
+
+  } catch (error) {
+    console.error("Login error:", error);
+
+    return Response.json(
+      { error: "Server error" },
+      { status: 500 }
+    );
+
+  } finally {
+    await client.close();
+  }
 }

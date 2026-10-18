@@ -10,7 +10,7 @@ export default function ClientDashboard() {
   const router = useRouter();
 
   useEffect(() => {
-    const storedName = localStorage.getItem("clientName");
+    const storedName = localStorage.getItem("userName");
 
     if (!storedName) {
       router.push("/login");

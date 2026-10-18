@@ -9,6 +9,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState<any>(null);
   const [accountType, setAccountType] = useState("client");
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,27 +31,25 @@ export default function LoginPage() {
       return;
     }
 
-      const router = useRouter();
+      
       const data = await response.json();
-
 
       setUser(data.user);
 
+      // Store the MongoDB ObjectId and user details
       localStorage.setItem("userId", data.user._id);
       localStorage.setItem("accountType", accountType);
-      if(accountType === "trainer" ){
-        localStorage.setItem("userName", data.user.name)
-      }else{
-        localStorage.setItem("userName", data.user.firstName);
-      }
-      
+      localStorage.setItem(
+        "userName",
+        data.user.firstName ?? data.user.name
+      );
 
-    // Redirect to the appropriate page after successful login
+      // Redirect after successful login
       if (accountType === "client") {
         router.push("/clients");
-        } else {
+      } else {
         router.push("/trainer");
-        }
+      }
     };
 
   return (

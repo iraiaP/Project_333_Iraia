@@ -6,7 +6,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function CreateAccountPage() {
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [accountType, setAccountType] = useState("client");
@@ -16,8 +17,8 @@ export default function CreateAccountPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!name || !email || !password) {
+    console.log("step 1");
+    if (!firstName || !lastName || !email || !password) {
       alert("Please fill in all fields.");
       return;
     }
@@ -28,11 +29,12 @@ export default function CreateAccountPage() {
     }
 
     const body =
-      accountType === "trainer" // lets include city and suburb in the request body if the account type is trainer
-        ? { name, email, password, accountType, city, suburb }
-        : { name, email, password, accountType };
-
+  accountType === "trainer"
+    ? { firstName, lastName, email, password, accountType, city, suburb }
+    : { firstName, lastName, email, password, accountType };
     try {
+      console.log("STEP 2: Sending POST request", body);
+
       const response = await fetch("/api/create-account", {
         method: "POST",
         headers: {
@@ -41,6 +43,7 @@ export default function CreateAccountPage() {
         body: JSON.stringify(body),
       });
 
+      console.log("STEP 3: Response status:", response.status);
       const data = await response.json();
       console.log(data);
 
@@ -49,6 +52,7 @@ export default function CreateAccountPage() {
       }
 
       console.log(data.message);
+
       router.push("/login");
     } catch (error) {
       alert(
@@ -86,13 +90,23 @@ export default function CreateAccountPage() {
         </label>
       </div>
 
-      <input
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        className="border p-2"
-      />
+      
+<input
+  type="text"
+  placeholder="First Name"
+  value={firstName}
+  onChange={(e) => setFirstName(e.target.value)}
+  className="border p-2"
+/>
+
+<input
+  type="text"
+  placeholder="Last Name"
+  value={lastName}
+  onChange={(e) => setLastName(e.target.value)}
+  className="border p-2"
+/>
+
 
       <input
         type="email"
@@ -131,14 +145,13 @@ export default function CreateAccountPage() {
       )}
 
       <div className="flex justify-center">
-        <Link href="/login">
+ 
           <button
             type="submit"
             className="rounded bg-blue-500 px-4 py-2 text-white"
           >
             Create Account
           </button>
-        </Link>
           
         <Link href = "/"
           className="border border-gray 300 rounded px-2"

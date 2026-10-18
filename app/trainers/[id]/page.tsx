@@ -30,8 +30,13 @@ export default function TrainerProfilePage() {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h1>{trainer.name}</h1>
+      <Link href="/">
+        <img src = "/home.svg" 
+          className="h-8 w-8"/>
+      </Link>
 
+      <h1>{trainer.name}</h1>
+        <p> Showing available sessions</p>
       <p>
         <strong>City:</strong> {trainer.city}
       </p>
