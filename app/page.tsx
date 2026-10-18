@@ -33,11 +33,8 @@ export default function Home() {
             Frickin Workkkk
             <p>   To Do:</p>
             <p> 
-          
-              , display booked sessions on trainerand client page/  
-              add better functionality to trainer ar for availability/   
-              make /[id]/book page look better 
-            
+              add better functionality to trainer ar for availability   
+              make /[id]/book page look and function better         
             </p>
           </h1>
           <div className="flex flex-col gap-4 sm:flex-row">

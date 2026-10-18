@@ -92,6 +92,13 @@ export default function LoginPage() {
         <button type="submit" className="rounded bg-blue-500 px-4 py-2 text-white">
           Login
         </button>
+
+        <div>
+          <link href="/page.tsx"
+          className = "border border-gray 300 rounded px-2">
+          Go back
+          </link>
+        </div>
       </form>
 
     </div>

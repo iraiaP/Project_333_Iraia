@@ -23,14 +23,13 @@ export default function TrainerProfile() {
   useEffect(() => {
     const storedName = localStorage.getItem("userName");
      
-
-  if (storedName) {
-    setName(storedName);
-  }
-
     if (!storedName) {
       router.push("/login");
       return;
+    }
+    
+    if (storedName) {
+      setName(storedName);
     }
 
     loadProfile() 
@@ -50,10 +49,30 @@ export default function TrainerProfile() {
 
     router.push("/login");
   };
-  const handleProfileUpdate = () => {
-    // Logic to update the profile goes here
-    setShowProfileModal(false); // Close the modal after updating
+  
+ const handleProfileUpdate = async () => {
+  const trainerId = localStorage.getItem("userId");
+
+  const response = await fetch(
+    `/api/trainer/${trainerId}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(profile),
+    }
+  );
+
+  if (response.ok) {
+    alert("Profile updated");
+
+    await loadProfile();
+
+    setShowProfileModal(false);
   }
+};
+
 
   return (
     <div className="p-6">

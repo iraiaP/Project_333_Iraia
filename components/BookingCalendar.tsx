@@ -1,10 +1,11 @@
 "use client";
 
-import { Calendar, dateFnsLocalizer } from "react-big-calendar";
+import { Calendar, dateFnsLocalizer, Views } from "react-big-calendar";
 import { format, parse, startOfWeek, getDay } from "date-fns";
 import { enNZ } from "date-fns/locale";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { useEffect, useState } from "react"; 
+import { useEffect, useState } from "react";
+ 
 
 const locales = {
   "en-NZ": enNZ,
@@ -21,14 +22,15 @@ const localizer = dateFnsLocalizer({
 });
 
 export default function BookingCalendar() {
-   const [events, setEvents] = useState<any[]>([]); // var for storing the events
-   const [selectedEvent, setSelectedEvent] = useState<any>(null); //var for storing the selected event
-   const [editBooking, setEditBooking] = useState({ //object used for editing selected event
-  title: "",
-  startTime: "",
-  endTime: "",
-});
-
+  const [events, setEvents] = useState<any[]>([]); // var for storing the events
+  const [selectedEvent, setSelectedEvent] = useState<any>(null); //var for storing the selected event
+  const [editBooking, setEditBooking] = useState({ //object used for editing selected event
+    title: "",
+    startTime: "",
+    endTime: "",
+  });
+  const [date, setDate] = useState(new Date());
+  const [view, setView] = useState<any>(Views.WEEK);
 // gets availability data from the API, currently from client view
   const loadAvailability = async () => {
     const response = await fetch("/api/availability");
@@ -52,7 +54,7 @@ export default function BookingCalendar() {
           "Content-Type": "application/json",
         },
       body: JSON.stringify({
-        trainerId: "test123",
+        trainerId: localStorage.getItem("userId"),
         startTime: start,
         endTime: end,
       }),
@@ -88,15 +90,20 @@ export default function BookingCalendar() {
         startAccessor="start"
         endAccessor="end"
         selectable
+        date={date}
+        view={view}
+        onNavigate={(newDate) => setDate(newDate)}
+        onView={(newView) => setView(newView)}
         onSelectSlot={(slot) => {
-          if (!selectedEvent) { // only allow slot selection if no event is currently selected
+            if (!selectedEvent) {
             handleSelectSlot(slot);
+
           }
         }}
         onSelectEvent={handleSelectEvent}
       />
       
-         {selectedEvent && (
+      {selectedEvent && (
       <div
         style={{
           position: "fixed",
