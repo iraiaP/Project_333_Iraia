@@ -139,6 +139,12 @@ export default function CreateAccountPage() {
             Create Account
           </button>
         </Link>
+          
+        <Link href = "/"
+          className="border border-gray 300 rounded px-2"
+        >
+          Go back
+        </Link>
       </div>
     </form>
   );

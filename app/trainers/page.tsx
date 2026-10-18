@@ -23,6 +23,12 @@ export default function FindTrainerPage() {
 
  return (
   <div style={{ padding: "20px" }}>
+
+     <Link href="/">
+      <img src = "/home.svg" 
+        className="h-8 w-8"/>
+    </Link>
+
     <h1>
       <strong>
         Find a Trainer
