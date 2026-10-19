@@ -1,6 +1,7 @@
 
 import { MongoClient } from "mongodb";
 import bcrypt from "bcryptjs";
+import { createSession } from "@/lib/session";
 
 const uri = process.env.MONGODB_URI!;
 
@@ -59,8 +60,11 @@ export async function POST(request: Request) {
         { status: 401 }
       );
     }
-
-    console.log("User logged in successfully");
+    //creates HTTP-only session cookie after the password has been verified.
+    await createSession(
+      user._id.toString(),
+      accountType
+    );
 
     // Return user details without password
     return Response.json({

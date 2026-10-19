@@ -13,7 +13,7 @@ import { ObjectId } from "mongodb";
  
   const availability = await db
     .collection("availability")
-    .find({trainerId: "test123"})
+    .find({})
     .toArray();
 
   return NextResponse.json(availability);

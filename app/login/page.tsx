@@ -48,7 +48,7 @@ export default function LoginPage() {
       if (accountType === "client") {
         router.push("/clients");
       } else {
-        router.push("/trainer");
+        router.push("/trainer-profile");
       }
     };
 

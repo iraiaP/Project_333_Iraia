@@ -31,23 +31,53 @@ export default function BookingCalendar() {
   });
   const [date, setDate] = useState(new Date());
   const [view, setView] = useState<any>(Views.WEEK);
+
+  const formatLocalDateTime = (date: Date) => {
+  const pad = (number: number) => String(number).padStart(2, "0");
+
+  return (
+    `${date.getFullYear()}-` +
+    `${pad(date.getMonth() + 1)}-` +
+    `${pad(date.getDate())}T` +
+    `${pad(date.getHours())}:` +
+    `${pad(date.getMinutes())}`
+  );
+};
 // gets availability data from the API, currently from client view
-  const loadAvailability = async () => {
-    const response = await fetch("/api/availability");
-    const data = await response.json();
-    console.log("Availability data:", data); // Log the fetched data for debugging
 
-    const calendarEvents = data.map((slot: any) => ({
-      id: slot._id,
-      title: slot.clientId || "Available",
-      start: new Date(slot.startTime),
-      end: new Date(slot.endTime),
-    }));
+const loadAvailability = async () => {
+  const trainerId = localStorage.getItem("userId");
 
-    setEvents(calendarEvents);
-  };
+  if (!trainerId) {
+    console.error("No trainer ID found. Please log in.");
+    return;
+  }
+
+  const response = await fetch(`/api/availability/${trainerId}`);
+
+  if (!response.ok) {
+    console.error("Failed to fetch availability");
+    return;
+  }
+
+  const data = await response.json();
+
+  console.log("Availability data:", data);
+
+  const calendarEvents = data.map((slot: any) => ({
+    id: slot._id,
+    title: slot.clientId || "Available",
+    start: new Date(slot.startTime),
+    end: new Date(slot.endTime),
+  }));
+
+  setEvents(calendarEvents);
+};
 // to handle the selection of a time slot in calendar and send a POST request to API to save
-  const handleSelectSlot = async ({ start, end }: any) => {
+  const handleSelectSlot = async ({ start }: any) => {
+    const end = new Date(start);   
+    end.setMinutes(end.getMinutes() + 60);
+    
     const response = await fetch("/api/availability", {
       method: "POST",
       headers: {
@@ -68,14 +98,15 @@ export default function BookingCalendar() {
 
 
 // handles when event is selected, sets the selected event to state so that it can be used for editing or deleting
-  const handleSelectEvent = (event: any) => {
-    setSelectedEvent(event);
-    setEditBooking({
-      title: event.title,
-      startTime: event.start.toISOString().slice(0, 16),
-      endTime: event.end.toISOString().slice(0, 16),
-    });
-  };
+const handleSelectEvent = (event: any) => {
+  setSelectedEvent(event);
+
+  setEditBooking({
+    title: event.title,
+    startTime: formatLocalDateTime(event.start),
+    endTime: formatLocalDateTime(event.end),
+  });
+};
 
  useEffect(() => {
     loadAvailability();

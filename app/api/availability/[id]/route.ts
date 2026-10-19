@@ -13,7 +13,7 @@ export async function GET(
     const db = client.db("Db_333");
     const sessions = await db
         .collection("availability")
-        .find({ trainerId: new ObjectId(id) })
+        .find({ trainerId: id })
         .toArray();
 
   return NextResponse.json(sessions);

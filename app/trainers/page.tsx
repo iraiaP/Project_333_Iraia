@@ -20,22 +20,40 @@ export default function FindTrainerPage() {
   };
 
   let currentCity = "";
+  const sortedTrainers = [...trainers].sort((a, b) =>
+      (a.city || "").trim().localeCompare(
+        (b.city || "").trim(),
+        "en-NZ",
+        { sensitivity: "base" }
+      )
+  );
 
  return (
   <div style={{ padding: "20px" }}>
+    <div className="mb-6 flex items-center gap-3">
+      <Link href="/">
+        <img
+          src="/home.svg"
+          alt="Home"
+          className="h-8 w-8"
+        />
+      </Link>
 
-     <Link href="/">
-      <img src = "/home.svg" 
-        className="h-8 w-8"/>
-    </Link>
-
+      <Link href="/clients">
+        <img
+          src="/profile-image.svg"
+          alt="Client profile"
+          className="h-8 w-8"
+        />
+      </Link>
+    </div>
     <h1>
       <strong>
         Find a Trainer
       </strong>
     </h1>
 
-    {trainers.map((trainer: any) => {
+    {sortedTrainers.map((trainer: any) => {
       const showCityHeading = trainer.city !== currentCity;
 
       if (showCityHeading) { // Update the current city to the trainer's city
@@ -59,9 +77,13 @@ export default function FindTrainerPage() {
             }}
           >
             <h3 >
-              
-              <Link href={`/trainers/${trainer._id}`}>
-                <strong>{trainer.name} </strong>
+              <Link
+                href={`/trainers/${trainer._id}`}
+                className="hover:text-blue-600"
+              >
+                {`${trainer.firstName || ""} ${trainer.lastName || ""}`.trim() ||
+                  trainer.name ||
+                  "Name TBC, still Book"}
               </Link>
             </h3>
 

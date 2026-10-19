@@ -53,7 +53,7 @@ export default function BookSessionPage() {
       console.error("Trainer error:", error);
     }
   };
-
+  //loads available sessions, should be booked sessions? work out soon
   const loadSessions = async () => {
     try {
       setLoading(true);

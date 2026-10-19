@@ -35,8 +35,11 @@ export default function TrainerProfilePage() {
           className="h-8 w-8"/>
       </Link>
 
-      <h1>{trainer.name}</h1>
-        <p> Showing available sessions</p>
+    <h1>
+      <strong>
+        {trainer.firstName} {trainer.lastName}
+      </strong>
+    </h1>
       <p>
         <strong>City:</strong> {trainer.city}
       </p>
@@ -54,12 +57,12 @@ export default function TrainerProfilePage() {
           <strong>Bio </strong>
         </h2>
         <p>{trainer.bio}</p>
-      <br/>
+      
       </div >
-        <Link href={'/trainers/' + id + '/book'}> 
-            <button
-                className="rounded bg-blue-500 px-4 py-2 text-white"
-            >Book Session</button>
+      <br/>
+        <Link href={'/trainers/' + id + '/book'}
+        className="rounded bg-blue-500 px-4 py-2 text-white">        
+            Available Sessions 
         </Link>
     </div>
   );

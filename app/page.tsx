@@ -2,7 +2,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [goal, setGoal] = useState("Build muscle");
@@ -14,7 +15,39 @@ export default function Home() {
   const [workout, setWorkout] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+    
+  const router = useRouter();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [accountType, setAccountType] = useState("");
 
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    const savedName = localStorage.getItem("userName");
+    const savedAccountType = localStorage.getItem("accountType");
+
+    if (userId) {
+      setIsLoggedIn(true);
+      setUserName(savedName || "");
+      setAccountType(savedAccountType || "");
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("accountType");
+
+    setIsLoggedIn(false);
+    setUserName("");
+    setAccountType("");
+
+    router.push("/");
+  };
+
+
+
+// beginning of AI component code
   async function generateWorkout() {
     setLoading(true);
     setError("");
@@ -51,22 +84,53 @@ export default function Home() {
   return (
     <div className="flex min-h-screen flex-col items-center bg-zinc-50 p-6 font-sans dark:bg-black">
 
+     
       {/* Navigation */}
-      <div className="flex w-full gap-4">
-        <Link
-          href="/create-account"
-          className="rounded bg-blue-500 px-4 py-2 text-white"
-        >
-          Create account
-        </Link>
+      <div className="flex w-full items-center justify-between gap-4">
 
-        <Link
-          href="/login"
-          className="rounded bg-blue-500 px-4 py-2 text-white"
-        >
-          Login
-        </Link>
+        {isLoggedIn ? (
+          <>
+            {/* Logged-in user */}
+            <div className="flex items-center gap-3">
+              <Link
+                href={accountType === "trainer" ? "/trainer" : "/clients"}
+                className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+              >
+                My Profile
+              </Link>
+
+              <span className="text-sm text-gray-700 dark:text-gray-200">
+                Hi, {userName}!
+              </span>
+            </div>
+
+            <button
+              onClick={handleLogout}
+              className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
+            >
+              Logout
+            </button>
+          </>
+        ) : (
+          /* Logged-out user */
+          <div className="flex items-center gap-3">
+            <Link
+              href="/create-account"
+              className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+            >
+              Create Account
+            </Link>
+
+            <Link
+              href="/login"
+              className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+            >
+              Login
+            </Link>
+          </div>
+        )}
       </div>
+
 
       <main className="mt-16 flex w-full max-w-2xl flex-col gap-8">
 
