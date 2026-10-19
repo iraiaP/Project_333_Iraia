@@ -3,12 +3,13 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function EditProfilePage() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
@@ -66,7 +67,14 @@ export default function EditProfilePage() {
 
       localStorage.setItem("userName", data.firstName);
 
-      setMessage("Profile updated successfully!");
+      if (response.ok) {
+        const updatedName = `${firstName} ${lastName}`.trim();
+
+        localStorage.setItem("userName", updatedName);
+
+        router.push("/clients");
+        router.refresh();
+      }
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Something went wrong"
